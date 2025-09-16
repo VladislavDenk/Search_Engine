@@ -1,0 +1,18 @@
+/all_base.xls
+/main - v 2.0.0.py
+/main — v 1.0.0.py
+/view.py
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+wheels/
+*.egg-info
+
+# Project files
+.venv
+.idea/
+.DS_Store
+.env
+.vscode/
