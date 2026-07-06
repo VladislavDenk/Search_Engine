@@ -19,45 +19,50 @@ RECIPIENTS_RAZVITIE = os.environ.get("recipients_razvitie", "")
 
 
 def pars_recipients(row: str | None):
+    """Парсинг получателей"""
     if not row:
         return []
     return [r.strip() for r in row.split(",") if r.strip()]
 
 def send_message(file_name):
+    """Отправляет письма с отчетом назначенным получателям"""
     
+    #Получение наименования организации из названия созданного файла
     team_name = file_name.split(".")[0]
     
+    # Определение получателей письма
     recipients = None
     if team_name == TEAMS[0]:
         recipients = RECIPIENTS_SCL
-        print(recipients)
     elif team_name == TEAMS[1]:
         recipients = RECIPIENTS_GAZOIL
-        print(recipients)
     elif team_name == TEAMS[2]:
         recipients = RECIPIENTS_RAZVITIE
-        print(recipients)
         
     if recipients is None:
         print(f"Не найден получатель для команды: {team_name}")
         return
-        
+    
+    # Формирование списка получателей
     recipients_list = pars_recipients(recipients)
     if not recipients_list:
         print("Список получателей пуст после парсинга.")
         return
 
+    # Формирование письма
     message = emails.html(
         subject = "Реестр СИ.",
         html = MESSAGE or "<p>Реестр СИ с актуализированными данными.</p>",
         mail_from = ("me", SENDER),
     )
 
+    # Вставка файла с отчетом в письмо
     message.attach(
         filename=file_name,
         data=open(file_name, "rb")
     )
     
+    # Отправление письма
     try:
         response = message.send(
             to = recipients_list,
