@@ -6,6 +6,7 @@ from datetime import datetime
 today = datetime.now()
 
 from models import adding_data, name_team
+from sender_report import send_message
 
 
 def get_value(name_base: str):
@@ -44,7 +45,7 @@ def get_value(name_base: str):
             )
 
 
-def write_value(name: str):
+def write_value(name: str) -> str:
     "Запись данных в файл формата .xlsx"
     conn = sql.connect("verification.db")
     query = "SELECT * FROM {}".format(name_team)
@@ -52,8 +53,10 @@ def write_value(name: str):
     file_name = "{}.xlsx".format(name)
     data.to_excel(file_name, index=False, sheet_name=name_team)
     print("Экспорт прошел успешно!")
+    return file_name
 
 
 if __name__ == "__main__":
     get_value(name_base=name_team)
-    write_value(name=name_team)
+    file_name: str = write_value(name=name_team)
+    send_message(file_name=file_name)
