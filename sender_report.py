@@ -1,7 +1,6 @@
 import os
 import emails
 from dotenv import load_dotenv
-from pathlib import Path
 
 load_dotenv()
 
@@ -9,12 +8,15 @@ SENDER: str = os.environ.get("sender_email")
 PASSWORD: str = os.environ.get("password_sender_email")
 HOST: str = os.environ.get("smtp_server_mail")
 PORT: int = int(os.environ.get("smtp_port_mail"))
+MESSAGE = os.environ.get("message")
+TEAMS = os.environ.get("teams")
 
 
 def send_message(file_name):
+
     message = emails.html(
         subject = "Реестр СИ.",
-        html = "<p>Здравствуйте! Во вложении реестр СИ с актуализированными данными. Просьба сверить данные и в случае обнаружения несоответствий исправить их, выделяя цветом места испралений, и направить скорректированный реестр СИ ответным письмом.</p>",
+        html = MESSAGE,
         mail_from = ("me", SENDER)
     )
 
@@ -22,7 +24,7 @@ def send_message(file_name):
         filename=file_name,
         data=open(file_name, "rb")
     )
-
+    
     response = message.send(
         to = "ivanovvladislav070@xmail.ru",
         smtp={

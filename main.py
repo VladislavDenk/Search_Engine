@@ -3,10 +3,10 @@ import pandas as pd
 
 from datetime import datetime
 
-today = datetime.now()
-
 from models import adding_data, name_team
-from sender_report import send_message
+from sender_report import send_message, TEAMS
+
+today = datetime.now()
 
 
 def get_value(name_base: str):
@@ -57,6 +57,9 @@ def write_value(name: str) -> str:
 
 
 if __name__ == "__main__":
-    get_value(name_base=name_team)
-    file_name: str = write_value(name=name_team)
-    send_message(file_name=file_name)
+    if name_team in TEAMS:
+        get_value(name_base=name_team)
+        file_name: str = write_value(name=name_team)
+        send_message(file_name=file_name)
+    else:
+        print("Указанной компании нет в конфигурационном файле или указано не верное название компании.")
