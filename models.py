@@ -16,12 +16,12 @@ class Equipment(Base):
     __tablename__ = name_team
 
     id = Column(Integer, primary_key=True)
-    responsible = Column(String(100), nullable=True)
-    number_object = Column(String(20), nullable=True)
-    name_equipment = Column(String(100), nullable=True)
-    equipment_type = Column(String(100), nullable=True)
-    factory_number = Column(String(100), nullable=True)
-    verification_date = Column(String(20))
+    responsible = Column(String(100), nullable=True, name='Ответственный')
+    number_object = Column(String(20), nullable=True, name="Номер объекта")
+    name_equipment = Column(String(100), nullable=True, name="Наименование оборудования")
+    equipment_type = Column(String(100), nullable=True, name="Тип оборудования")
+    factory_number = Column(String(100), nullable=True, name="Заводской номер")
+    verification_date = Column(String(20), name="Дата поверки")
 
     def __repr__(self):
         return "| Ответственный: {} | Номер объекта: {} | Наименование: {} | Тип: {} | Заводской номер: {} | Дата поверки: {} |".format(
