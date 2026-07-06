@@ -52,7 +52,7 @@ def write_value(name: str) -> str:
     data = pd.read_sql_query(query, conn)
     file_name = "{}.xlsx".format(name)
     data.to_excel(file_name, index=False, sheet_name=name_team)
-    print("Экспорт прошел успешно!")
+    print("✅ Экспорт прошел успешно!")
     return file_name
 
 
@@ -62,4 +62,4 @@ if __name__ == "__main__":
         file_name: str = write_value(name=name_team)
         send_message(file_name=file_name)
     else:
-        print("Указанной компании нет в конфигурационном файле или указано не верное название компании.")
+        print("❗Указанной компании нет в конфигурационном файле или указано не верное название компании.")

@@ -40,13 +40,13 @@ def send_message(file_name):
         recipients = RECIPIENTS_RAZVITIE
         
     if recipients is None:
-        print(f"Не найден получатель для команды: {team_name}")
+        print(f"❗Не найден получатель для команды: {team_name}")
         return
     
     # Формирование списка получателей
     recipients_list = pars_recipients(recipients)
     if not recipients_list:
-        print("Список получателей пуст после парсинга.")
+        print("❗Список получателей пуст после парсинга.")
         return
 
     # Формирование письма
@@ -75,10 +75,10 @@ def send_message(file_name):
         )
 
         if response.status_code == 250:
-            print("Сообщение успешно отправлено!")
+            print("✅ Сообщение успешно отправлено!")
         else:
-            print(f"Отправка прекращена: {response.status_code}")
+            print(f"❌ Отправка прекращена: {response.status_code}")
     except Exception as e:
         # Это покажет реальную ошибку SMTP (аутентификации, соединения и пр.)
-        print(f"Ошибка при отправке письма: {e}")
+        print(f"❗ Ошибка при отправке письма: {e}")
         raise
