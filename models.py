@@ -1,19 +1,16 @@
-from sqlalchemy import create_engine, Column, String, Integer, DateTime
+from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.orm import declarative_base, sessionmaker
-from pandas.io import sql
 
 
 engine = create_engine("sqlite:///verification.db")
 Base = declarative_base()
-name_team = input("Введите наименование организации: ")
-delete_table = "DROP TABLE IF EXISTS {};".format(name_team)
 Session = sessionmaker(bind=engine)
 session = Session()
 
 
 class Equipment(Base):
-    "Создание таблицы с заданным пользователем именем"
-    __tablename__ = name_team
+    "Создание таблицы"
+    __abstract__ = True
 
     id = Column(Integer, primary_key=True)
     responsible = Column(String(100), nullable=True, name='Ответственный')
@@ -24,24 +21,65 @@ class Equipment(Base):
     verification_date = Column(String(20), name="Дата поверки")
 
     def __repr__(self):
-        return "| Ответственный: {} | Номер объекта: {} | Наименование: {} | Тип: {} | Заводской номер: {} | Дата поверки: {} |".format(
-            self.responsible,
-            self.number_object,
-            self.name_equipment,
-            self.equipment_type,
-            self.factory_number,
-            self.verification_date,
+        return (f"| Ответственный: {self.responsible} | "
+                f"Номер объекта: {self.number_object} | "
+                f"Наименование: {self.name_equipment} | "
+                f"Тип: {self.equipment_type} | " 
+                f"Заводской номер: {self.factory_number} | "
+                f"Дата поверки: {self.verification_date} |")
+
+def drop_tables(team_names):
+    """Удаляет указанные таблицы из БД, если они существуют"""
+    # Сначала регистрируем кламмы с правильными __tablename__, чтобы Base.metadata "увидел" эти таблицы
+    tables_to_drop = []
+    for name in team_names:
+        class_name = f"Equipment_{name}"
+        DynamicClass = type(
+            class_name,
+            (Equipment,),
+            {
+                "__tablename__": name,
+                "__module__": __name__,
+                "__table_args__": {"extend_existing": True}
+            },
         )
+        table = Base.metadata.tables.get(name)
+        if table is not None:
+            tables_to_drop.append(table)
+    
+    if tables_to_drop:
+        Base.metadata.drop_all(engine, tables=tables_to_drop)
+        print(f"✅ Удалены таблицы: {[t.name for t in tables_to_drop]}")
+    else:
+        print("ℹ️ Нет таблиц для удаления.")
 
-# Удаляет таблицу если она уже существует
-Base.metadata.drop_all(engine)
-# Создаёт таблицу
-Base.metadata.create_all(engine)
+
+def create_table_for_team(team_name):
+    """Создает таблицу для конкретной компании"""
+    # Динамически создаём класс для таблицы
+    class_name = f"Equipment_{team_name}"
+    dynamic_class = type(
+        class_name,
+        (Equipment,),
+        {
+            "__tablename__": team_name,
+            "__module__": __name__,
+            "__table_args__": {"extend_existing": True}
+        }
+    )
+    
+    # Создаёт таблицу
+    Base.metadata.create_all(engine)
+    
+    return dynamic_class
 
 
-def adding_data(responsible, object, name, eq_type, number, date):
+def adding_data(responsible, object, name, eq_type, number, date, team_name):
     "Добавляет значения в таблицу"
-    new_data = Equipment(
+    
+    dynamic_class = create_table_for_team(team_name)
+    
+    new_data = dynamic_class(
         responsible=responsible,
         number_object=object,
         name_equipment=name,

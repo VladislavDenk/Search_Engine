@@ -51,7 +51,7 @@ def send_message(file_name):
 
     # Формирование письма
     message = emails.html(
-        subject = "Реестр СИ.",
+        subject = f"Реестр СИ - {team_name}.",
         html = MESSAGE or "<p>Реестр СИ с актуализированными данными.</p>",
         mail_from = ("me", SENDER),
     )
@@ -75,7 +75,7 @@ def send_message(file_name):
         )
 
         if response.status_code == 250:
-            print("✅ Сообщение успешно отправлено!")
+            print(f"✅ Сообщение успешно отправлено сотрудникам {team_name}!")
         else:
             print(f"❌ Отправка прекращена: {response.status_code}")
     except Exception as e:
