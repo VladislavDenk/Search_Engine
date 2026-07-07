@@ -53,7 +53,7 @@ def send_message(file_name):
     message = emails.html(
         subject = f"Реестр СИ - {team_name}.",
         html = MESSAGE or "<p>Реестр СИ с актуализированными данными.</p>",
-        mail_from = ("me", SENDER),
+        mail_from = ("Иванов Владислав", SENDER),
     )
 
     # Вставка файла с отчетом в письмо
