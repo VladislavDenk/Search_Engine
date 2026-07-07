@@ -16,3 +16,9 @@ wheels/
 .DS_Store
 .env
 .vscode/
+
+.db
+
+СЦЛ.xlsx
+Газойл.xlsx
+Развитие.xlsx
