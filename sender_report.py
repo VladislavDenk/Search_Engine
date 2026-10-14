@@ -1,8 +1,11 @@
 import os
 import emails
+from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
+
+PATH_TO_FILE: str = Path(r"{}".format(os.environ.get("path_to_file")))
 
 SENDER: str = os.environ.get("sender_email")
 PASSWORD: str = os.environ.get("password_sender_email")
@@ -24,12 +27,8 @@ def pars_recipients(row: str | None):
         return []
     return [r.strip() for r in row.split(",") if r.strip()]
 
-def send_message(file_name):
+def send_message(file_name: str, team_name: str):
     """Отправляет письма с отчетом назначенным получателям"""
-    
-    #Получение наименования организации из названия созданного файла
-    team_name = file_name.split(".")[0]
-    
     # Определение получателей письма
     recipients = None
     if team_name == TEAMS[0]:

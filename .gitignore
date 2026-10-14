@@ -19,6 +19,5 @@ wheels/
 
 .db
 
-СЦЛ.xlsx
-Газойл.xlsx
-Развитие.xlsx
+*.xlsx
+.xlsx

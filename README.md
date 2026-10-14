@@ -112,12 +112,12 @@ sender_email = "your.email@example.com"
 password_sender_email = "Pn1TweXrgHthkhWD1PsZ2o"
 
 # Наименования организаций, по которым необходимо составлять отчеты
-teams = "СЦЛ,Газойл,Развитие"
+teams = "team_1,team_2,team_3"
 
 # Адреса электронных почт, получателей
-recipients_scl = "example1@example.ru,example2@example.ru,example3@example.ru"
-recipients_gazoil = "example1@example.ru,example2@example.ru"
-recipients_razvitie = "example1@example.ru,example2@example.ru,уxample3@example.ru"
+recipients_team_1 = "example1@example.ru,example2@example.ru,example3@example.ru"
+recipients_team_2 = "example1@example.ru,example2@example.ru"
+recipients_team_3 = "example1@example.ru,example2@example.ru,уxample3@example.ru"
 
 # Тело сообщения
 message = "<p>Здравствуйте! Тут вы можете написать свое сообщение.</p>"
